@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.github.zqhcxy.myandroiddesign.activity.FABRevealLayoutActivity;
 import com.github.zqhcxy.myandroiddesign.adapter.MyRecycleViewAdapter;
 
@@ -22,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rcv_view;
 
+    private FloatingActionsMenu fab_menu;
+    private FloatingActionButton fab_menu_acA;
+    private FloatingActionButton fab_menu_acB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +42,26 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initView() {
         rcv_view = (RecyclerView) findViewById(R.id.rcv_view);
+
+        fab_menu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
+        fab_menu_acA = (FloatingActionButton) findViewById(R.id.fab_menu_acA);
+        fab_menu_acB = (FloatingActionButton) findViewById(R.id.fab_menu_acB);
+        fab_menu_acA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(fab_menu.isExpanded()){
+                    fab_menu.collapse();
+                }
+            }
+        });
+        fab_menu_acB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(fab_menu.isExpanded()){//如果菜单展开，就关闭。
+                    fab_menu.collapse();
+                }
+            }
+        });
 
     }
 

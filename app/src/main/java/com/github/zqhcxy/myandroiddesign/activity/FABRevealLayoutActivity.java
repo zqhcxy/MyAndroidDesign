@@ -3,7 +3,6 @@ package com.github.zqhcxy.myandroiddesign.activity;
 import android.animation.ObjectAnimator;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,6 +18,9 @@ import com.truizlop.fabreveallayout.OnRevealChangeListener;
 
 public class FABRevealLayoutActivity extends AppCompatActivity {
 
+    private static final int FIRSTVIEW=1;
+    private static final int SECONDVIEW=2;
+
     private FABRevealLayout fab_rly;
     private FloatingActionButton fab_play;
     private TextView tv_title;//主界面的标题
@@ -30,12 +32,15 @@ public class FABRevealLayoutActivity extends AppCompatActivity {
     private TextView song_title_text;//第二界面的标题
     private ImageView cover;//封面
 
+    private int whitchView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fabreveal_layout);
         findViews();
+        whitchView=FIRSTVIEW;
         configureFABReveal();
     }
 
@@ -56,7 +61,9 @@ public class FABRevealLayoutActivity extends AppCompatActivity {
         cover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fab_rly.revealMainView();//重置到第一界面
+               if(whitchView==SECONDVIEW){
+                   fab_rly.revealMainView();//重置到第一界面
+                }
             }
         });
     }
@@ -75,6 +82,7 @@ public class FABRevealLayoutActivity extends AppCompatActivity {
             public void onMainViewAppeared(FABRevealLayout fabRevealLayout, View mainView) {
                 showMainViewItems();
                 cover.setImageResource(R.drawable.photo2);
+                whitchView=FIRSTVIEW;
             }
 
             //第二界面
@@ -82,7 +90,8 @@ public class FABRevealLayoutActivity extends AppCompatActivity {
             public void onSecondaryViewAppeared(FABRevealLayout fabRevealLayout, View secondaryView) {
                 showSecondaryViewItems();
                 cover.setImageResource(R.drawable.photo1);
-                prepareBackTransition(fabRevealLayout);
+//                prepareBackTransition(fabRevealLayout);
+                whitchView=SECONDVIEW;
             }
         });
     }
@@ -90,11 +99,11 @@ public class FABRevealLayoutActivity extends AppCompatActivity {
     private void showMainViewItems() {
         scale(tv_title, 50);
         scale(tv_content, 150);
-//        scale(fab_rly,50);
+        scale(cover,50);
     }
 
     private void showSecondaryViewItems() {
-//        scale(fab_rly,50);
+        scale(cover,50);
         scale(song_progress_bar, 0);
         animateSeekBar(song_progress_bar);
         scale(song_title_text, 100);
@@ -104,12 +113,12 @@ public class FABRevealLayoutActivity extends AppCompatActivity {
     }
 
     private void prepareBackTransition(final FABRevealLayout fabRevealLayout) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                fabRevealLayout.revealMainView();//重置到第一界面
-            }
-        }, 5000);
+    //        new Handler().postDelayed(new Runnable() {
+    //            @Override
+    //            public void run() {
+    //                fabRevealLayout.revealMainView();//重置到第一界面
+    //            }
+    //        }, 5000);
     }
 
     private void scale(View view, long delay) {
